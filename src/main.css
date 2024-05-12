@@ -1,3 +1,6 @@
+td, th, table {
+  border: 2px solid white;
+}
 :root {
     --primary: #3ca7bf;
     --business: #b347d4;
@@ -9,7 +12,11 @@
   
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
-  
+  button{
+    background-color:white;
+    color: #ff5b57;
+    border-color: #fff;
+  }
   * {
     margin: 0;
     padding: 0;
@@ -207,4 +214,11 @@
     border: 1px solid rgb(47, 47, 47);
     border-radius: 10px;
     margin-top: 30px;
+  }
+
+  .switch-button {
+    position: fixed; /* Menggunakan posisi fixed agar tombol tetap di atas meskipun halaman di-scroll */
+    top: 20px; /* Menentukan jarak dari atas */
+    left: 20px; /* Menentukan jarak dari kiri */
+    z-index: 999; /* Menentukan urutan tumpukan, pastikan lebih tinggi dari konten lainnya */
   }
