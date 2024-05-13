@@ -1,9 +1,4 @@
-  <template>
-    <div>
-      <button @click="selectedComponent = 'todo'">Tampilkan Daftar Kegiatan</button>
-      <button @click="selectedComponent = 'post'">Tampilkan Posting</button>
-
-      <template v-if="selectedComponent === 'todo'">
+<template>
           <main class="app">
             <section class="greeting">
               <h3 class="title">Daftar Kegiatan</h3>
@@ -59,74 +54,9 @@
           </main>
       </template>
 
-      <template v-if="selectedComponent === 'post'">
-      <main class="app">
-        <div>
-          <h2>Posts</h2>
-          <label for="userSelect">Pilih Pengguna: </label>
-          <select id="userSelect" v-model="selectedUser" @change="fetchUserPosts">
-            <option value="">Semua Pengguna</option>
-            <option v-for="user in users" :value="user.id" :key="user.id">{{ user.name }}</option>
-          </select>
-
-          <template v-if="selectedUser || !selectedUser && users.length === 0">
-            <h3 style="color: orange;">Pengguna: {{ getUser(selectedUser).name }}</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>User ID</th>
-                  <th>Pengguna</th>
-                  <th>ID</th>
-                  <th>Judul</th>
-                  <th>Isi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="post in userPostsByUser(selectedUser)" :key="post.id">
-                  <td>{{ post.userId }}</td>
-                  <td>{{ getUser(post.userId).name }}</td>
-                  <td>{{ post.postId }}</td>
-                  <td>{{ post.title }}</td>
-                  <td>{{ post.body }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </template>
-
-          <template v-else>
-            <template v-for="user in users"><br><br>
-              <table>
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Pengguna</th>
-                    <th>ID</th>
-                    <th>Judul</th>
-                    <th>Isi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="post in userPostsByUser(user.id)" :key="post.id">
-                    <td>{{ post.userId }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ post.postId }}</td>
-                    <td>{{ post.title }}</td>
-                    <td>{{ post.body }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </template>
-          </template>
-        </div>
-      </main>
-    </template>
-    </div>
-  </template>
-
   <script setup>
   import { ref, onMounted, computed } from "vue";
 
-  const selectedComponent = ref('todo'); // Default menampilkan komponen todo
   const todos = ref([]);
   const text = ref("");
   const showAll = ref(true);
@@ -150,38 +80,6 @@
   const deleteTodo = (todo) => {
     todos.value = todos.value.filter((x) => x !== todo);
   }
-
-  const selectedUser = ref(null);
-  const userPosts = ref([]);
-
-  const fetchUserPosts = async () => {
-  try {
-    let url = 'https://jsonplaceholder.typicode.com/posts';
-    if (selectedUser.value) {
-      url += `?userId=${selectedUser.value}`;
-    } else if (window.location.search) {
-      const params = new URLSearchParams(window.location.search);
-      const userId = params.get('userId');
-      if (userId) {
-        url += `?userId=${userId}`;
-      }
-    }
-    const response = await fetch(url);
-    const fetchedPosts = await response.json();
-    userPosts.value = fetchedPosts.map(post => ({
-      userId: post.userId,
-      id: post.id,
-      title: post.title,
-      body: post.body,
-      postId: post.id,
-      userId: post.userId 
-    }));
-    console.log('User posts:', userPosts.value);
-  } catch (error) {
-    console.error('Error fetching user posts:', error);
-  }
-};
-
 
   onMounted(() => {
     todos.value = JSON.parse(localStorage.getItem("todos")) || [];
@@ -214,33 +112,6 @@
     showCompleted.value = false;
     showPending.value = true;
   }
-
-  const users = ref([]);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
-      users.value = await response.json();
-      console.log('Fetched users:', users.value);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
-
-  const getUser = userId => {
-    return users.value.find(user => user.id === userId) || { name: 'Unknown' };
-  };
-
-  const userPostsByUser = userId => {
-    if (!userId) {
-      return userPosts.value;
-    }
-    return userPosts.value.filter(post => post.userId === userId);
-  };
-
-  onMounted(() => {
-    fetchUsers();
-  });
 
   </script>
 
