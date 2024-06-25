@@ -23,6 +23,32 @@ td, th, table {
     box-sizing: border-box;
     font-family: "montserrat", sans-serif;
   }
+  .menu ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu ul li {
+    margin: 0 15px;
+  }
+  
+  .menu ul li a {
+    text-decoration: none;
+    color: #f0f0f0; 
+    font-weight: bold;
+    font-size: 30px; 
+    padding: 10px 20px; 
+    border-radius: 20px; 
+    transition: background-color 0.3s, transform 0.3s; 
+  }
+  
+  .menu ul li a:hover {
+    background-color: green; 
+    transform: scale(1.05); 
+  }
   
   input:not([type="radio"]):not([type="checkbox"]),
   button {

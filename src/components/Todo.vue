@@ -102,4 +102,9 @@
     showPending.value = true;
   };
   </script>
+
+<style>
+@import '../main.css';
+@import '../style.css';
+</style>
   
